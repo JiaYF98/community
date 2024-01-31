@@ -1,0 +1,16 @@
+community:
+  path:
+    domain: http://localhost:8080
+    upload: d:/embrace/data/community-upload
+
+logging:
+  level:
+    com:
+      nowcoder:
+        community:
+          mapper: debug
+          service: debug
+          controller: info
+          util: debug
+          quartz: debug
+
