@@ -1,0 +1,107 @@
+application.properties中
+	添加配置：
+		# TaskExecutionProperties
+		spring.task.execution.pool.core-size=5
+		spring.task.execution.pool.max-size=15
+		spring.task.execution.pool.queue-capacity=100
+		
+		# TaskSchedulingProperties
+		spring.task.scheduling.pool.size=5
+
+config包下新建ThreadPoolConfig
+	添加注解：
+		Configuration
+		EnableScheduling
+		EnableAsync
+
+新建测试类ThreadPoolTest
+	添加属性：
+		Logger
+		
+		// JDK普通线程池
+		ExecutorService
+		
+		// JDK可执行定时任务的线程池
+		ScheduleExecutorService
+	
+	注入属性：
+		// Spring普通线程池
+		ThreadPoolTaskException
+				
+		// Spring可执行定时任务的线程池
+		ThreadPoolTaskScheduler
+	
+	添加方法：
+		sleep(long m):void
+		
+		// JDK普通线程池
+		+testExecutorService():void
+		
+		// JDK定时任务线程池
+		testScheduledExecutorService():void
+		
+		// Spring普通线程池
+		testThreadPoolTaskExecutor():void
+		
+		// Spring定时任务线程池
+		testThreadPoolTaskScheduler():void
+
+AlphaService中
+	添加属性：
+		Logger
+	
+	添加属性：
+		@Async // 让该方法在多线程环境下，被异步调用
+		execute1():void
+		
+		@Scheduled(initialDelay = 10000, fixedRate = 1000)
+		execute2():void
+		
+ThreadPoolTest中
+	添加方法：
+		// Spring普通线程池（简化）
+		testThreadPoolTaskExecutorSimple():void
+		
+		// Spring定时任务线程池（简化）
+		testThreadPoolTaskSchedulerSimple():void
+
+导入依赖spring-boot-starter-quartz
+
+新建包quartz，包中新建类AlphaJob implements Job
+	实现方法：
+		execute(JobExecutionContext context):void
+
+config包下新建配置类QuartzConfig
+	// FactoryBean可简化Bean的实例化过程
+		通过FactoryBean封装Bean的实例化过程
+		将FactoryBean装配到Spring容器里
+		将FactoryBean注入给其它的Bean
+		该Bean得到的是FactoryBean所管理的对象实例
+
+	添加Bean：
+		// 配置JobDetail
+		JobDetailFactoryBean alphaJobDetail
+		// 配置Trigger(SimpleTriggerFactoryBean, CronTriggerFactoryBean)
+		SimpleTriggerFactoryBean alphaTrigger(JobDetail alphaJobDetail)
+
+application.properties中
+	添加配置：
+		# QuartzProperties
+		spring.quartz.job-store-type=jdbc
+		spring.quartz.scheduler-name=communityScheduler
+		spring.quartz.properties.org.quartz.scheduler.instanceId=AUTO
+		spring.quartz.properties.org.quartz.jobStore.class=org.quartz.impl.jdbcjobstore.JobStoreTX
+		spring.quartz.properties.org.quartz.jobStore.driverDelegateClass=org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+		spring.quartz.properties.org.quartz.jobStore.isClustered=true
+		spring.quartz.properties.org.quartz.threadPool.class=org.quartz.simpl.SimpleThreadPool
+		spring.quartz.properties.org.quartz.threadPool.threadCount=5
+
+新建测试类QuartzTest
+	注入属性：
+		Scheduler
+	
+	添加方法：
+		testDeleteJob():void
+
+QuartzConfig中：
+	注释两个@Bean

@@ -1,0 +1,48 @@
+导入依赖
+	thymeleaf-extras-springsecurity[版本号]
+
+功能实现
+	DiscussPostMapper中
+		添加方法：
+			+updateType(Integer id, Integer type):Integer
+			+updateStatus(Integer id, Integer status):Integer
+
+	修改DiscusspostMapper.xml，实现相应方法
+
+	DiscussPostService中
+		添加方法：
+			+updateType(Integer id, Integer type):Integer
+			+updateStatus(Integer id, Integer status):Integer
+
+	DiscussPostController中
+		添加方法：
+			@ResponseBody
+			setTop(Integer id):String
+				触发发帖事件，更新es中的数据
+				
+			@ResponseBody
+			setWonderful(Integer id):String
+			
+			@ResponseBody
+			setDelete(Integer id):String
+				触发删帖事件
+
+	CommunityConstant中
+		添加常量：
+			TOPIC_DELETE = "delete"
+
+	EventConsumer中
+		添加方法：
+			@KafkaListener(topics = {TOPIC_DELETE})
+			handleDeleteMessage(ConsumerRecord record)
+
+	修改discuss-detail.html
+
+	修改discuss.js
+
+
+权限管理
+	修改SecurityConfig
+
+按钮显示
+	修改discuss-detail.html

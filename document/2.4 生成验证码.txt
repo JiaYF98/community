@@ -1,0 +1,8 @@
+config 包下增加 KaptchaConfig 类，添加配置方法 kaptchaProducer():Producer
+
+LoginController 增加 getKaptcha(HttpServletResponse response, HttpSession session):
+注入 kaptchaProducer
+创建日志对象
+
+修改login页面
+修改global.js

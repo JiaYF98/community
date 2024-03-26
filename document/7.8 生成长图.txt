@@ -1,0 +1,45 @@
+application.properties中
+	添加配置：
+		wk.image.command=路径
+		wk.image.storage=路径
+
+config包下新建类WKConfig
+	添加属性：
+		Logger
+	
+	注入属性：
+		String wkImageStorage
+		
+	添加方法：
+		@PostConstruct
+		+init():void
+
+controller包下新建ShareController
+	添加属性：
+		Logger
+	
+	注入属性：
+		EventProducer
+		String domain
+		String contextPath
+		String wkImageStorage
+		
+	添加方法：
+		@ResponseBody
+		+share():String
+			生成随机文件名
+			发布事件，异步生成长图
+			返回访问路径
+
+CommunityConstant中
+	添加属性：
+		TOPIC_SHARE = "share"
+
+EventConsumer中
+	注入属性：
+		String wkImageCommand
+		String wkImageStorage
+	
+	添加方法：
+		@KafkaListener(topics = TOPIC_SHARE)
+		handleShareMessage(ConsumerRecord record)

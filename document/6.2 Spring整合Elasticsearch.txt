@@ -1,0 +1,64 @@
+引入依赖
+	spring-boot-starter-data-elasticsearch
+	
+配置Elasticsearch
+	application.properties中添加配置：
+		spring.data.elasticsearch.cluster-name=nowcoder
+		spring.data.elasticsearch.cluster-nodes=localhost:9300	#9200 HTTP端口 9300 TCP端口
+	
+	解决依赖冲突
+		CommunityApplication中添加：
+			@PostConstruct
+			public void init() {
+				// 解决netty启动冲突问题
+				// Netty4Utils
+				System.setProperty("es.set.netty.runtime.avaliable.processors", "false")
+			}
+
+Spring Data Elasticsearch
+	DiscussPost上添加注解
+		类上注解：
+			@Document(indexName = "discusspost", type = "_doc", shards = 6, replicas = 3)
+		属性上注解：
+			@Id
+			private Integer id;
+			
+			@Field
+			private Integer userId;
+			
+			@Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_smart")
+			private String title;
+			
+			@Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_smart")
+			private String content;
+			
+			@Field(type = FieldType.Integer)
+			private Integer type;
+			
+			@Field(type = FieldType.Integer)
+			private Integer status;
+			
+			@Field(type = Field.Date)
+			private Date createTime;
+			
+			@Field(type = Field.Integer)
+			private Integer commentCount;
+			
+			@Field(type = FieldType.Double)
+			private Double score;
+
+dao包下新建包elasticsearch
+	新建接口DiscussPostRepository
+
+添加elasticsearch测试类
+	注入属性：
+		DiscussPostMapper
+		DiscussPostRepository
+		ElasticsearchTemplate
+	添加方法：
+		testInsert()
+		testInsertList()
+		testUpdate()
+		testDelete()
+		testSearchByRepository()
+		testSearchByTemplate()

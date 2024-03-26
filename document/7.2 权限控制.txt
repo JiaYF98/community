@@ -1,0 +1,41 @@
+导入依赖
+
+登录检查
+	WebMvcConfig中
+		注释属性：
+			LoginRequiredInterceptor
+	CommunityConstant中：
+		添加常量：
+			AUTHORITY_USER:String
+			AUTHORITY_MODERATOR:String
+	config包下新建配置类SecurityConfig
+		重写方法：
+			+config(WebSecurity web):void
+			#config(HttpSecurity http):void
+
+授权配置
+	UserService中
+		添加方法：
+			+getAuthorities(Integer userId):Collection<? extends GrantedAuthority>
+
+认证方案
+	LoginTicketInterceptor中
+		修改方法：
+			+preHandle(HttpServletRequest request, HttpServletResponse response, Object handler):boolean
+				构建用户认证的结果，并存入SecurityContext，以便于Security进行授权
+			+afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
+	LoginController中
+		修改方法：
+			logout(String ticket):String
+
+CSRF配置
+	修改index.html
+		访问该页面时，生成CSRF令牌
+	修改index.js
+		发送AJAX请求之前，将CSRF令牌设置到请求的消息头中
+	
+不启用csrf检查
+	SecurityConfig中
+		修改方法：
+			#config(HttpSecurity http):void
+				添加http.csrf().disable();

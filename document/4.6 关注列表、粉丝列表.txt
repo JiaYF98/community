@@ -1,0 +1,17 @@
+FollowService中
+	添加方法：
+		+findFollowees(Integer userId, Integer offset, Integer limit):List<Map<String, Object>>
+		+findFollowers(Integer userId, Integer offset, Integer limit):List<Map<String, Object>>
+
+FollowController中
+	添加属性：
+		UserService
+	添加方法：
+		+getFollowees(Integer userId, Page page, Model model):String
+		+getFollowers(Integer userId, Page page, Model model):String
+
+修改profile.html
+
+修改followee.html
+
+修改follower.html

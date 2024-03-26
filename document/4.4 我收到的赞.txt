@@ -1,0 +1,24 @@
+RedisKeyUtil下
+	添加属性：
+		PREFIX_USER_LIKE
+	添加方法：
+		+getUserLikeKey(Integer userId):String
+
+LikeService中
+	重构like(Integer userId, Integer entityType, Integer entityId, Integer entityUserId):void
+		编程式事务
+
+LikeController中
+	修改like方法
+
+修改discuss-detail.html
+
+修改discuss.js
+
+UserController中
+	添加方法：
+		getProfilePage(Integer userId, Model model):String
+
+修改index.html
+
+修改profile.html

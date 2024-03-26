@@ -1,0 +1,19 @@
+新建测试类SpringBootTest
+	注入属性：
+		DiscussPostService
+	
+	添加属性：
+		DiscussPost data
+
+	添加方法：
+		+beforeClass():void
+		+afterClass():void
+		
+		+before():void
+		-after():void
+	
+	添加测试方法：
+		test1():void
+		test2():void
+		testFindById():void
+		testUpdateScore():void

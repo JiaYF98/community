@@ -1,0 +1,77 @@
+导入依赖
+	qiniu-java-sdk
+
+application.properties中
+	添加配置：
+		#qiniu
+		qiniu.key.access=密钥
+		qiniu.key.secret=密钥
+
+UserController中
+	注入属性：
+		String accessKey
+		String secretKey
+		String headerBucketName
+		String headerBucketUrl
+	
+	废弃方法：
+		uploadHeader(MultipartFile headerImage, Model model):String
+		getHeader(String fileName, HttpServletResponse response)
+	
+	修改方法：
+		getSettingPage(Model model):String
+			上传文件名称
+			设置响应信息
+			生成上传凭证
+	
+	添加方法：
+		@RequestMappling(path = "/header/url", method = RequestMethod.POST)
+		@ResponseBody
+		+updateHeaderUrl(String fileName):String
+
+修改setting.html
+
+新建setting.js
+
+ShareController中
+	注入属性：
+		String shareBucketUrl
+	
+	废弃方法：
+		getShareImage(String fileName, HttpServletResponse response):void
+
+EventConsumer中
+	注入属性：
+		String accessKey
+		String secretKey
+		String shareBucketName
+	
+	注入属性：
+		ThreadPoolTaskScheduler
+		
+	修改方法：
+		handleShareMessage(ConsumerRecord record):void
+			启用定时器，监视该图片，一旦生成了，则上传至七牛云
+	
+	新建内部类UploadTask implements Runnable
+		添加属性：
+			String fileName
+			String suffix
+			Future future
+			long startTime
+			int uploadTime
+			
+		
+		添加方法：
+			uploadTask(String fileName, String suffix)
+			setFuture(Future future):void
+		
+		实现方法：
+			run():void
+				生成失败，强制停止
+				上传失败，上传次数超过3次，终止任务
+				设置响应信息
+				生成上传凭证
+				指定上传机房
+				开始上传图片
+				处理响应结果

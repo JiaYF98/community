@@ -1,0 +1,41 @@
+CommentMapper中
+	新增方法：
+		insertComment(Comment comment):DiscussPost;
+		
+CommentMapper.xml中
+	新增insertFields
+	添加insert语句
+
+DiscussPostMapper中
+	新增方法：
+		updateCommentCount(Integer id, Integer commentCount):Integer;
+
+DiscussPostMapper.xml中
+	添加update语句
+	
+DiscussPostService中
+	新增方法：
+		updateCommentCount(Integer id, Integer commentCount):Integer
+
+CommentService中
+	注入属性：
+		SentitiveFilter
+	添加方法：
+		addComment(Comment comment):Integer
+			判断参数是否为空
+			添加评论
+				过滤html标签
+				过滤敏感词
+			更新帖子评论数量
+				判断
+
+controller包下新建CommentController
+	注入属性：
+		HostHolder
+	添加方法：
+		addComment(Integer discussPostId, Comment comment):String
+			补充comment属性
+			添加评论
+			重定向到该帖子页面
+
+修改discuss-detail.html

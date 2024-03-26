@@ -1,0 +1,45 @@
+RedisKeyUtil中
+	添加属性：
+		PREFIX_FOLLOWEE = "followee"
+		PREFIX_FOLLOWER = "follower"
+	添加方法：
+		+getFolloweeKey(Integer userId, Integer entityType):String
+		+getFollowerKey(Integer entityType, Integer entityId):String
+
+service包下新建FollowService
+	添加属性：
+		redisTemplate
+	添加方法：
+		+follow(Integer userId, Integer entityType, Integer entityId):void
+		+unfollow(Integer userId, Integer entityType, Integer entityId):void
+
+controller包下新建FollowController
+	添加属性：
+		FollowService
+	添加方法：
+		@ResponseBody
+		+follow(Integer entityType, Integer entityId):String
+
+修改profile.js
+	发送异步请求
+
+CommunitConstant中
+	添加常量：
+		ENTITY_TYPE_USER
+
+修改profile.html
+
+FollowService中
+	添加方法：
+		+findFolloweeCount(Integer userId, Integer entityType):Long
+		+findFollowerCount(Integer entityType, Integer entityId):Long
+		+hasFollowed(Integer userId, Integer entityType, Integer entityId):Boolean
+
+UserController中
+	修改方法：
+		getProfilePage
+			查询关注数量
+			查询粉丝数量
+			查询是否已经关注
+
+修改profile.html

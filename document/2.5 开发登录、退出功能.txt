@@ -1,0 +1,34 @@
+新建实体类 LoginTicket
+
+新建mapper接口 LoginTicketMapper
+添加方法 insertLoginTicket(LoginTicket loginTicket):Integer 
+selectByTicket(String ticket):LoginTicket
+updateStatus(String ticket, Integer status):Integer
+
+在MapperTest中增加测试类
+InsertloginTicketTest
+SelectLoginTicketTest
+
+在UserService中注入LoginTicketMapper
+添加方法 login(String username, String password, int expiredSeconds)
+
+在LoginController中
+添加方法 login(String username, String password, 
+	String code, Boolean rememberMe, Model model, 
+	HttpSession session, HttpServletResponse response):String
+注入 contexPath
+
+在constant中新建ExpiredConstant，有两个属性
+default_expired_seconds
+remember_expired_seconds
+
+
+修改login页面
+
+UserService中添加方法
+logout(String ticket):void
+
+LoginController中添加方法
+logout(String ticket)
+
+修改index页面

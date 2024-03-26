@@ -1,0 +1,24 @@
+resources目录下新建sensitive-words.txt
+
+util包下新建SensitiveFilter
+	定义内部类TireNode：
+		属性：
+			关键词结束标识	boolean isKeywordEnd
+			子节点	Map<Character, TrieNode> subNodes
+		方法：
+			isKeywordEnd getter和setter
+			addSubNode和getSubNode
+	添加属性：
+		Logger LOGGER
+		String REPLACEMENT	替换符
+		TrieNode rootNode	根节点
+	添加方法：
+		@PostConstruct
+		+ init():void
+			开启输入流
+			将sensitive-words.txt中的敏感词添加到前缀树中
+		- addKeyword(String keyword):void
+		+ filter(String text):String
+		- isSymbol(Character c):boolean	// 0x2E80~0x9FFF是东亚文字范围
+
+新建测试类 SensitiveTest

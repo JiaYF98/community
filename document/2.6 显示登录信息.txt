@@ -1,0 +1,34 @@
+在interceptor包下新建LoginTicketInterceptor
+	重写preHandle：
+		在util包下新建CookieUtil 
+		添加静态方法getValue(HttpServletRequest request, String name):String
+
+		从cookie中获取凭证
+
+		LoginTicketInterceptor中注入UserService
+		
+		Userservice中添加方法 findLoginTicket(String ticket):LoginTicket
+
+		检查凭证是否有效
+
+		在util中新建HostHolder 持有用户信息，用于代替session对象
+		添加属性 ThreadLocal<User> users
+		添加方法 setUser(User user):void
+		添加方法 getUser():User
+		添加方法 remove():void
+
+		LoginTicketInterceptor中注入hostHolder
+
+	重写postHandle
+		从hostHolder中获取user
+		将user放入model中
+		
+	
+	重写afterCompletion
+		清理hostHolder中的数据
+
+在config包下新建WebMvcConfig类
+	注入 loginTicketInterceptor
+	重写方法 addInterceptors(InterceptorRegistry registry)
+
+修改index页面header部分

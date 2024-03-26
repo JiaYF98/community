@@ -1,0 +1,26 @@
+注册功能：
+创建LoginController 添加getRegisterPage():String方法
+修改index页面的访问路径 给header标签设置名称 方便复用
+修改register页面的访问路径 header标签复用index的header标签
+
+导入commons lang包 在配置文件中添加配置
+新建工具类CommunityUtil 在工具类中添加两个方法：
+生成随机字符串 generateUUID():String
+MD5加密 md5(String key):String
+
+userServcie 注入邮件客户端和模板引擎 注入域名和项目名
+添加register(User user):Map<String, Object> 方法中要验证账号邮箱等信息
+注入templateEngine
+修改activation页面
+
+LoginController添加register():String 
+
+修改operate-result页面 header标签复用index的header标签
+
+------
+激活功能：
+util包下增加CommunityConstant工具类
+有属性三个属性 ACTIVATION_REPEAT ACTIVATION_SUCCESS ACTIVATION_FAILURE
+在UserService中增加方法activation(int userId, String code):int
+在LoginController中增加activation(Model model, Integer userId, String code):String getLoginPage():String方法
+修改login页面

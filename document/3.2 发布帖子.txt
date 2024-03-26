@@ -1,0 +1,34 @@
+引入fastjson依赖
+
+CommunityUtil下添加方法：
+	+ getJSONString(int code, String msg, Map<String, Object> map):String
+	+ getJSONString(int code, String msg):String
+	+ getJSONString(int code):String
+
+DiscussPostMapper添加方法：
+	insertDiscussPost(DiscussPost discussPost):Integer
+
+DiscussPostService添加方法：
+	addDiscussPost(DiscussPost post):Integer
+		转义HTML标记
+		过滤敏感词
+
+controller包下新建DiscussPostController
+	注入属性：
+		DiscussPostService
+		HostHolder
+	添加方法：
+		+ addDiscussPost(String title, String content):String
+			验证用户是否登录
+			返回json
+
+修改index.js
+	获取标题和内容
+	发送异步请求（POST）
+		在提示框中显示返回消息
+		显示提示框
+		2秒后自动隐藏提示框
+		刷新页面
+
+修改index.html
+	用户登录才显示我要发布按钮

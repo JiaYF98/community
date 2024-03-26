@@ -1,0 +1,66 @@
+通知列表
+	MessageMapper中
+		添加方法:
+			// 查询某个主题下最新的通知
+			selectLatestNotice(Integer userId, String topic):Message
+			// 查询某个主题所包含的通知数量
+			selectNoticeCount(Integer userId, String topic):Integer
+			// 查询未读的通知的数量
+			selectNoticeUnreadCount(Integer userId, String topic):Integer
+
+	MessageMapper.xml中实现对应方法
+	
+	MessageService中
+		添加方法：
+			+findLatestNotice(Integer userId, String topic):Message
+			+findNoticeCount(Integer userId, String topic):Integer
+			+findNoticeUnreadCount(Integer userId, String topic):Integer
+
+	MessageController中
+		添加方法：
+			+getNoticeList(Model model):String
+				查询评论类通知
+				查询点赞类通知
+				查询关注类通知
+				查询未读消息数量
+		
+		修改方法：
+			getLetterList(Model model, Page page):String
+
+	修改letter.html
+
+	修改notice.html
+
+通知详情
+	MessageMapper中
+		添加方法：
+			+selectNotices(Integer userId, String topic, Integer offset, Integer limit):List<Message>
+	MessageMapper.xml中实现对应方法
+	
+	MessageService中
+		添加方法：
+			+findNotices(Integer userId, String topic, Integer offset, Integer limit):List<Message>
+	
+	MessageController中
+		添加方法：
+			+getNoticeDetail(String topic, Page page, Model model):String
+	
+	修改notice-detail.html
+
+未读消息
+	interceptor包下新建类MessageInterceptor
+		注入属性：
+			HostHolder
+			MessageService
+		重写方法：
+			postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView):void
+				查询未读私信数量
+				查询未读系统通知数量
+	
+	WebMvcConfig中
+		注入属性：
+			MessageInterceptor
+		修改方法：
+			addInterceptors(InterceptorRegistry registry):void
+	
+	修改index.html

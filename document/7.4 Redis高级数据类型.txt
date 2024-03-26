@@ -1,0 +1,13 @@
+RedisTest中
+	添加测试方法：
+		testHyperLogLog()
+			统计20万个重复数据的独立总数
+		
+		testHyperLogLogUnion()
+			将三组数据合并，再统计合并后的重复数据的独立总数
+			
+		testBitMap()
+			统计一组数据的布尔值
+		
+		testBitMapOperation()
+			统计三组数据的布尔值，并对这三组数据做OR运算

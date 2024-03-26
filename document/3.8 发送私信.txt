@@ -1,0 +1,31 @@
+发送私信：
+	MessageMapper中
+		添加方法：
+			insertMessage(Message message):Integer
+			updateStatus(List<Integer> ids, Integer status):Integer
+
+	实现MessageMapper中的方法
+
+	MessageService中
+		注入属性：
+			SensitiveFilter
+		添加方法：
+			addMessage(Message message):Integer
+			readMessage(List<Integer> ids):Integer
+
+	MessageController中
+		添加方法：
+			sendLetter(String toName, String content):String
+			
+	Userservice中
+		添加方法：
+			findUserByName(String username):User
+
+	修改letter.html
+	修改letter.js
+	修改letter-detail.html
+
+设置已读：
+	MessageController中
+		添加方法：
+			getLetterIds(List<Message> letterList):List<Integer>

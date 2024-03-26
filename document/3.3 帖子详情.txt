@@ -1,0 +1,17 @@
+DiscussPostMapper中添加方法
+	selectDiscussPostById(Integer id):DiscussPost
+DiscussPostMapper.xml中实现
+
+DiscussPostController中
+	添加属性：
+		UserService
+		
+	添加方法：
+		+ getDiscussPost(Integer discussPostId, Model model):String
+			查询帖子
+			查询帖子作者
+			返回页面
+
+修改index.html
+
+修改discuss-detail.html

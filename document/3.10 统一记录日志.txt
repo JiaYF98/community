@@ -1,0 +1,4 @@
+aspect包下新建ServiceLogAspect
+	切点为execution(* com.nowcoder.community.service.*.*(..))
+	添加前置通知 before(JoinPoint joinPoint)
+	

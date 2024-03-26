@@ -1,0 +1,12 @@
+配置文件中配置redis的host
+
+新建配置类RedisConfig
+	添加方法返回bean
+		redisTemplate(RedisConnectionFactory factory):RedisTemplate<String, Object>
+			设置key的序列化方式
+			设置value的序列化方式
+			设置hash的key的序列化方式
+			设置hash的value的序列化方式
+			让template生效
+
+新建测试类测试redis

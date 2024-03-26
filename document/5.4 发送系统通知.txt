@@ -1,0 +1,68 @@
+entity包下新建类Event
+	添加属性：
+		String topic;
+		int userId;
+		int entityType;
+		int entityId;
+		int entityUserId;
+		Map<String, Object> data;
+	添加get和set方法：
+		set方法返回值设置为Event
+		修改setData(String key, Object value)
+
+新建包event
+	新建类EventProducer
+		注入属性：
+			KafkaTemplate
+		添加方法：
+			fireEvent(Event event)
+				将对象转化为Json，发送消息
+	新建类EventConsumer
+		注入属性：
+			Logger
+			MessageService
+		添加方法：
+			@KafkaListener(topics = {TOPIC_COMMENT, TOPIC_LIKE, TOPIC_FOLLOW})
+			+handleCommentMessage(ConsumerRecord record):void
+				判断消息是否为空
+				将消息中的Json还原为对象
+				发送站内消息
+
+CommentController中
+	注入属性：
+		EventProducer
+	修改方法：
+		addComment(Integer discussPostId, Comment comment):String
+			添加触发评论事件
+
+CommentMapper中
+	添加方法：
+		selectCommentById(Integer id):Comment
+
+comment-mapper.xml实现CommentMapper的方法
+
+CommentService中
+	添加方法：
+		findCommentById(Integer id):Comment
+
+LikeController中
+	注入属性：
+		EventProducer
+	修改方法：
+		like(Integer entityType, Integer entityId, Integer entityUserId, Integer postId):String
+
+FollowController中
+	注入属性：
+		EventProducer
+	修改方法：
+		follow(Integer entityType, Integer entityId):String
+
+修改discuss-detail.html
+	like方法增加参数
+
+修改discuss.js
+	like方法增加参数
+
+ServiceLogAspect中
+	修改before(JoinPoint joinPoint):void
+		Consumer处理数据时，调用service方法，不会有attributes

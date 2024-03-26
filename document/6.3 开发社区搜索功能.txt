@@ -1,0 +1,51 @@
+解决问题
+	DiscussPostMapper中修改insertDiscussPost实现语句，添加keyProperty="id"
+
+搜索服务
+	service包下添加ElasticsearchService
+		注入属性：
+			DiscussPostRepository
+			ElasticsearchTemplate
+		添加方法：
+			saveDiscussPost(DiscussPost post):void
+			deleteDiscussPost(Integer Id):void
+			searchDiscussPost(String keyword, Integer current, Integer limit):Page<DiscussPost>
+
+发布事件
+	DiscussController中
+		注入属性：
+			EventProducer
+		修改方法：
+			addDiscussPost(String title, String content):String
+				触发发帖事件
+	
+	CommentController中
+		修改方法：
+			addComment(Integer discussPostId, Comment comment):String
+				触发添加评论事件，添加评论时要修改es中的内容
+	
+	EventConsumer中
+		注入属性：
+			DiscussPostService
+			ElasticsearchService
+		添加方法：
+			@KafkaListener(topics = {TOPIC_PUBLSH})
+			handlePublishMessage(ConsumerRecord record):void
+
+显示结果
+	controller包下新建类SearchController
+		注入属性：
+			ElasticsearchService
+			UserService
+			LikeService
+		添加方法：
+			search(String keyword, Page page, Model model):String
+				搜索帖子
+				聚合数据
+				返回页面
+
+	修改index.html
+	
+	修改search.html
+
+			

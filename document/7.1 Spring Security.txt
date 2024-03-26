@@ -1,0 +1,46 @@
+导入依赖
+	spring-boot-starter-security
+
+User实现UserDetails接口
+	实现方法：
+		isAccountNonExpired():boolean
+		isAccountNonLocked():boolean
+		isCredentialsNonExpired():boolean
+		isEnabled():boolean
+		getAuthorities()
+
+UserService实现UserDetailService接口
+	实现方法：
+		loadUserByUsername(String username):UserDetail
+
+config包下新建配置类SecurityConfig extends WebSecurityConfigurerAdapter
+	注入属性：
+		UserService
+	实现方法：
+		+configure(WebSecurity web):void
+			忽略静态资源的访问
+		
+		// AuthenticationManager：认证的核心接口
+		// AuthenticationManagerBuilder：用于构建AuthenticationManager对象的工具
+		// ProviderManager：AuthenticationManager接口的默认实现类
+		#configure(AuthenticationManagerBuilder auth):void
+			// 内置的认证规则
+			// auth.userDetailsService(userService).passwordEncoder(new Pbkdf2PasswordEncoder("12345"));
+
+			// 自定义认证规则
+			// AuthenticationProvider: ProviderManager持有一组AuthenticationProvider,每个AuthenticationProvider负责一种认证.
+			// 委托模式: ProviderManager将认证委托给AuthenticationProvider.
+			auth.authenticationProvider(new AuthenticationProvider(){})
+		#void configure(HttpSecurity http)
+			登录相关配置
+			退出相关配置
+			授权配置
+			增加Filter，处理验证码
+			记住我
+		
+HomeController中
+	修改方法：
+		getIndexPage(Model model)
+
+修改index.html
+		

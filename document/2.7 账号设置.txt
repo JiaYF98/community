@@ -1,0 +1,41 @@
+新建UserController
+	添加方法 getSettingPage():String
+
+	
+修改setting页面
+
+修改index页面
+	
+配置文件添加参数:
+	community.path.upload
+	
+UserService中
+	添加方法：
+		updateHeader(Integer userId, String headerUrl):Integer
+		
+UserController中：
+	添加参数：logger
+	注入上传路径：
+		String uploadPath
+	注入域名：
+		String domain
+	注入项目访问环境路径： 
+		String contextPath
+	注入UserService
+	注入hostHolder
+	添加方法：
+		uploadHeader(MultipartFile headerImage, Model model):String
+			检查文件是否存在
+			修改文件名
+				截取后缀 判断是否合理
+				生成随机文件名
+			确定文件存放的路径
+			存储路径
+			更新当前用户的头像路径（web访问路径）
+				http://localhost:8080/community/user/header/xxx.png
+			调用service层更新
+			重定向到首页
+		getHeader(String fileName, HttpServletResponse response):void
+			确定服务器存放路径
+			响应图片
+修改setting页面

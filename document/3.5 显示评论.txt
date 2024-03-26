@@ -1,0 +1,27 @@
+entity包下新建类Comment
+
+mapper包下新建CommentMapper
+	添加方法：
+		selectCommentsByEntity(Integer entityType, Integer entityId, Integer offset, Integer limit):List<Comment>
+		selectCountByEntity(Integer entityType, Integer entityId):Integer
+
+实现mapper的方法
+
+service包下新建CommentService
+	添加属性：
+		CommentMapper
+	添加方法：
+		+ findCommentsByEntity(Integer entityType, Integer entityId, Integer offset, Integer limit):List<Comment>
+		+ findCommentCount(Integer entityType, Integer entityId):Integer
+
+修改DiscussPostController
+	添加属性：
+		CommentService
+	修改getDiscussDetailPage(Integer id, Model model, Page page):String
+		设置评论分页信息
+		查询帖子的评论和评论的回复，放入model中
+		返回页面/site/discuss-detail
+		
+修改index.html
+
+修改disscuss-detail.html

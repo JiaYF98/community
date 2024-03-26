@@ -1,0 +1,53 @@
+完成私信列表模块
+	新建Message类
+
+	新建MessageMapper
+		添加方法：
+			+selectConversations(Integer userId, Integer offset, Integer limit):List<Message>
+			+selectConversationCount(Integer userId):Integer
+			+selectLetters(String conversationId, Integer offset, Integer limit):List<Message>
+			+selectLetterCount(String conversationId):Integer
+			+selectLetterUnreadCount(Integer userId, String conversationId):Integer;
+
+	新建MessageMapper.xml，实现对数据库的操作
+
+	测试MessageMapper的所有方法
+
+	新建MessageService
+		注入属性 MessageMapper
+		添加方法：
+			+findConversations(Integer userId, Integer offset, Integer limit):List<Message>
+			+findConversationCount(Integer userId);
+			+findLetters(String conversationId, Integer offset, Integer limit):List<Message>
+			+findLetterCount(String conversationId):Integer
+			+findLetterUnreadCount(Integer userId, String conversationId):Integer
+
+	新建MessageController
+		注入属性：
+			MessageService
+			UserService
+			HostHolder
+		添加方法：
+			getLetterList(Model model, Page page):String
+				设置分页信息
+				查询会话列表
+				查询未读消息数量
+				返回/site/letter
+
+	修改index.html
+
+	修改letter.html
+
+
+完成私信详情模块
+	MessageController中
+		添加方法：
+			+getLetterDetail(String conversationId, Page page, Model model):String
+				设置分页信息
+				查询私信列表
+				查询私信目标
+				返回/site/letter-detail
+				
+			-getLetterTarget(String conversationId):User
+	
+	修改letter-detail.html

@@ -114,9 +114,6 @@ public class UserServiceImpl implements UserService {
             return map;
         }
 
-        // 删除redis中用户的缓存
-        redisTemplate.delete(getLoginUserKey(username));
-
         // 注册用户
         user.setType(0);
         user.setStatus(0);
@@ -134,6 +131,9 @@ public class UserServiceImpl implements UserService {
         context.setVariable("url", url);
         String content = templateEngine.process("/mail/activation", context);
         mailClient.sendMail(email, "激活账号", content);
+
+        // 删除redis中用户的缓存
+        redisTemplate.delete(getLoginUserKey(username));
 
         return map;
     }
@@ -166,11 +166,11 @@ public class UserServiceImpl implements UserService {
         if (user.getStatus().equals(USER_ACTIVATED)) {
             return ACTIVATION_REPEAT;
         } else {
+            userMapper.updateStatus(user.getId(), USER_ACTIVATED);
             // 删除login:user:[username]
             redisTemplate.delete(getLoginUserKey(user.getUsername()));
             // 删除user:[userid]
             redisTemplate.delete(userKey);
-            userMapper.updateStatus(user.getId(), USER_ACTIVATED);
             return ACTIVATION_SUCCESS;
         }
     }
@@ -253,8 +253,9 @@ public class UserServiceImpl implements UserService {
     public Integer updateHeader(Integer userId, String headerUrl) {
         // 数据库更新，删除redis中的user缓存
         String userKey = getUserKey(userId);
+        Integer rows = userMapper.updateHeader(userId, headerUrl);
         redisTemplate.delete(userKey);
-        return userMapper.updateHeader(userId, headerUrl);
+        return rows;
     }
 
     @Override
@@ -278,11 +279,11 @@ public class UserServiceImpl implements UserService {
             return map;
         }
 
+        userMapper.updatePassword(user.getId(), newPassword);
         // 删除redis中的缓存
         // login:user:[username]
         redisTemplate.delete(getLoginUserKey(user.getUsername()));
         newPassword = CommunityUtil.md5(newPassword + user.getSalt());
-        userMapper.updatePassword(user.getId(), newPassword);
 
         return map;
     }

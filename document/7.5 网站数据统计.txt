@@ -1,0 +1,75 @@
+RedisKeyUtil中
+	添加常量：
+		PREFIX_UV = "uv"
+		PREFIX_DAU = "dau"
+		
+	添加方法：
+		// 单日UV
+		+getUVKey(String date):String
+		
+		// 区间UV
+		+getUVKey(String startDate, String endDate):String
+		
+		// 单日活跃用户
+		+getDAUKey(String date):String
+		
+		// 区间活跃用户
+		+getDAUKey(String startDate, String endDate):String
+
+service包下新建类DataService
+	注入属性：
+		RedisTemplate
+		
+	添加属性：
+		SimpleDateFormat
+		
+	添加方法：
+		// 将指定的IP计入UV
+		+recordUV(String ip):void
+		
+		// 统计指定日期范围内的UV
+		+calculateUV(Date start, Date end):Long
+			整理该日期范围内的key
+			合并这些数据
+			返回统计的结果
+		
+		// 将指定用户计入DAU
+		+recordDAU(Integer userId):void
+		
+		// 统计指定日期范围内的DAU
+		+calculateDAU(Date start, Date end):Long
+			整理该日期范围内的key
+			进行OR运算
+
+interceptor包下新建类DataInterceptor实现HandlerInterceptor
+	注入属性：
+		DataService
+		HostHolder
+
+	重写方法：
+		preHandle(HttpServletRequest request, HttpServletResponse, Object handler):boolean
+			统计UV
+			统计DAU
+
+WebMvcConfig中
+	修改方法：
+		addInterceptors(InterceptorRegistry registry):void
+			添加拦截器DataInterceptor
+
+controller包下新建DataController
+	注入属性：
+		DataService
+	
+	添加方法：
+		// 统计页面
+		getDataPage():String
+		
+		// 统计网站UV
+		getUV(Date start, Date end, Model model):String
+		
+		// 统计活跃用户
+		getDAU(Date start, Date end, Model model):String
+
+修改data.html
+
+修改SecurityConfig鉴权部分

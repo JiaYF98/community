@@ -1,0 +1,88 @@
+RedisKeyUtil中
+	添加属性：
+		PREFIX_POST
+	添加方法：
+		getPostScoreKey():String
+
+DiscussPostController中
+	注入属性：
+		RedisTemplate
+		
+	修改方法：
+		addDiscussPost(String title, String content):String
+			计算帖子分数
+		setWonderful(Integer id):String
+			计算帖子分数
+
+CommentController中
+	注入属性：
+		RedisTemplate
+	
+	修改方法：
+		addComment(Integer discussPostId, Comment comment):String
+			计算帖子分数
+
+LikeController中
+	注入属性：
+		RedisTemplate
+	
+	修改方法：
+		like(Integer entityType, Integer entityId, Integer entityUserId, Integer postId):String
+			如果是给帖子点赞，则计算帖子分数
+
+quartz包下新建类PostScoreRefreshJob implements Job
+	添加属性：
+		Logger
+		Date epoch
+	
+	注入属性：
+		DiscussPostService
+		LikeService
+		ElasticsearchService
+
+	实现方法：
+		execute(JobExecutionContext context)
+	
+	添加方法：
+		refresh(Integer postId):void
+			是否精华
+			评论数量
+			点赞数量
+			计算权重
+			计算分数
+			更新帖子分数
+			同步搜索数据
+
+DiscussPostMapper中
+	添加方法：
+		updateScore(Integer id, Double score):Integer
+
+DiscussPostMapper.xml中实现对应方法
+
+DiscussPostService中
+	添加方法：
+		updateScore(Integer id, Double score):Integer
+
+QuartzConfig中
+	添加Bean：
+		JobDetailFactoryBean postScoreRefreshJobDetail
+		SimpleTriggerFactoryBean postScoreRefreshTrigger
+
+AlphaService中
+	注释execute2的注解
+
+DiscussPostMapper中
+	修改方法：
+		selectDiscussPosts(Integer userId, Integer offset, Integer limit, Integer orderMode)
+
+DiscussPostMapper.xml中修改对应方法
+
+DiscussPostService中
+	修改方法：
+		findDiscussPostsByUserId(Integer userId, Integer offset, Integer limit, Integer orderMode)
+
+HomeController中
+	修改方法：
+		getIndexPage(Model model, Page page, @RequestParm(name = "orderMode", defaultValue = "0") Integer orderMode)
+
+修改index.html

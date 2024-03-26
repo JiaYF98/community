@@ -1,0 +1,56 @@
+使用Redis存储验证码：
+	RedisKeyUtil中
+		添加常量：
+			PREFIX_KAPTCHA
+		添加方法：
+			getKaptchaKey(String owner):String
+
+	LoginController中
+		修改方法getKaptcha(HttpServletResponse response):void
+		修改方法login(String username, String password, String code, boolean rememberme, Model model, HttpServletResponse response, String kaptchaOwner):String
+
+使用Redis存储登录凭证：
+	RedisKeyUtil中
+		添加常量：
+			PREFIX_TICKET
+		添加方法：
+			getTicketKey(String ticket)
+	
+	LoginTicketMapper中
+		添加注解：
+			@Deprecated
+	
+	UserService中
+		注释属性：
+			LoginTicketMapper
+		注入属性：
+			RedisTemplate
+		修改方法：
+			login(String username, String password, Integer expiredSeconds):Map<String, Object>
+			logout(String ticket):void
+			findLoginTicket(String ticket):LoginTicket
+
+使用Redis缓存用户信息
+	RedisKeyUtil中
+		添加常量：
+			PREFIX_USER
+		添加方法：
+			优先从缓存中取值
+			getUserKey(Integer userId):String
+			
+			取不到时初始化缓存数据		
+			initCache(Integer userId):User
+	
+			数据变更时清除缓存数据
+			clearCache(Integer userId):void
+		注释属性：
+			LoginTicketMapper
+			
+	LoginController中
+		修改方法：
+			activation(Integer userId, String code):Integer
+	
+	UserService中
+		修改方法：
+			findUserById(Integer id):User
+			updateHeader(Integer userId, String headerUrl):Integer

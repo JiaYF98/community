@@ -1,0 +1,13 @@
+引入依赖：
+	<dependency>
+		<groupId>org.springframework.kafka</groupId>
+		<artifactId>spring-kafka</artifactId>
+	</dependency>
+
+application.properties中配置KafkaProperties
+	spring.kafka.bootstrap-servers=localhost:9092
+	spring.kafka.consumer.group-id=community-consumer-group
+	spring.kafka.consumer.enable-auto-commit=true
+	spring.kafka.consumer.auto-commit-interval=3000
+
+新建测试类KafkaTest测试kafka

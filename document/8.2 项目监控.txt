@@ -1,0 +1,27 @@
+引入依赖：
+	spring-boot-starter-actuator
+
+application.properties中
+	添加配置：
+		# actuator
+		management.endpoints.web.exposure.include=*
+		management.endpoints.web.exposure.exclude=info,caches
+
+新建包actuator，包下新建类DataBaseEndpoint
+	类上添加注解：
+		@Component
+		@Endpoint(id = "database")
+	
+	添加属性：
+		Logger
+	
+	注入属性：
+		DataSource
+	
+	
+	添加方法：
+		@ReadOperation
+		+checkConnection():String
+
+SecurityConfig中
+	为/actuator/**添加管理员权限

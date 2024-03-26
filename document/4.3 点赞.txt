@@ -1,0 +1,36 @@
+util包下新建类RedisKeyUtil
+	添加属性：
+		String SPLIT = ":"
+		String PREFIX_ENTITY_LIKE = "like:entity"
+	添加方法：
+		getEntityLikeKey(Integer entityType, Integer entityId):String
+
+service包下新建LikeService
+	添加属性：
+		RedisTemplate
+	添加方法：
+		+like(Integer userId, Integer entityType, Integer entityId):void
+			如果已经点赞则取消点赞
+		+findEntityLikeCount(Integer entityType, Integer entityId):Long
+		+findEntityLikeStatus(Integer userId, Integer entityType, Integer entityId):Integer
+
+controller包下新建LikeController
+	添加属性：
+		LikeService
+		HostHolder
+	添加方法：
+		+like(Integer entityType, Integer entityId):String
+			点赞
+			查询点赞数
+			查询点赞状态
+			返回结果
+			
+修改discuss-detail.html
+		
+js文件夹下新建discuss.js
+
+修改HomeController的getIndexPage方法
+
+修改DiscussPostController的getDiscussPost方法
+
+修改index.html

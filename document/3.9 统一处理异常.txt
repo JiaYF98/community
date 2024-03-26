@@ -1,0 +1,12 @@
+修改404.html、500.html
+
+HomeController中添加方法：
+	+getErrorPage():String
+
+advice包下新建ExceptionAdvice
+	添加方法：
+		+handleException(Exception e, HttpServletResquest request, HttpServletResponse response):void
+			记录日志
+			判断是同步请求还是异步请求
+	添加属性：
+		Logger
